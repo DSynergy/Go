@@ -1,0 +1,28 @@
+{
+  "name": "Go",
+  "version": "0.0.1",
+  "homepage": "https://github.com/DSynergy/Go",
+  "authors": [
+    "(Dustin Gault <dustin.gault@gmail.com>)",
+    "(Valentino Espinoza <xvalentino13@gmail.com>)",
+    "(Jeffrey Gu <jgu@jeffreygu.com>)"
+  ],
+  "description": "Go in jQuery",
+  "main": "index.html",
+  "keywords": [
+    "go"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "chai": "~2.3.0",
+    "jquery": "~2.1.4",
+    "mocha": "~2.2.5"
+  }
+}
