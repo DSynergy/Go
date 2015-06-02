@@ -1,8 +1,11 @@
 module.exports = {
-  entry: "./index.js",
+  entry: {
+    index: "./index.js",
+    test: "mocha!./test.js"
+  }
   output: {
     path: __dirname,
-    filename: "bundle.js"
+    filename: "[name].bundle.js"
   },
   module: {
     loaders: [

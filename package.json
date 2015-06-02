@@ -12,7 +12,8 @@
     "webpack": "^1.9.10"
   },
   "devDependencies": {
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "mocha-loader": "^0.7.1"
   },
   "scripts": {
     "test": "mocha"
