@@ -5,7 +5,9 @@
   "main": "index.js",
   "dependencies": {
     "chai": "^2.3.0",
-    "jquery": "^2.1.4"
+    "jquery": "^2.1.4",
+    "node-libs-browser": "^0.5.2",
+    "webpack": "^1.9.10"
   },
   "devDependencies": {
     "mocha": "^2.2.5"
