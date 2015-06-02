@@ -4,7 +4,6 @@
   "description": "Go game in jQuery/javacript for Turing School",
   "main": "index.js",
   "dependencies": {
-    "chai": "^2.3.0",
     "handlebars": "^3.0.3",
     "jquery": "^2.1.4",
     "lodash": "^3.9.3",
@@ -12,6 +11,7 @@
     "webpack": "^1.9.10"
   },
   "devDependencies": {
+    "chai": "^2.3.0",
     "mocha": "^2.2.5",
     "mocha-loader": "^0.7.1",
     "webpack-dev-server": "^1.9.0"
