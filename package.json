@@ -1,0 +1,29 @@
+{
+  "name": "Go",
+  "version": "1.0.0",
+  "description": "Go game in jQuery/javacript for Turing School",
+  "main": "index.js",
+  "dependencies": {
+    "chai": "^2.3.0",
+    "jquery": "^2.1.4"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.5"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DSynergy/Go.git"
+  },
+  "keywords": [
+    "go"
+  ],
+  "author": "Valentino Espinoza (xvalentino13@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DSynergy/Go/issues"
+  },
+  "homepage": "https://github.com/DSynergy/Go"
+}
