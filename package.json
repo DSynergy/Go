@@ -6,6 +6,7 @@
   "dependencies": {
     "chai": "^2.3.0",
     "jquery": "^2.1.4",
+    "lodash": "^3.9.3",
     "node-libs-browser": "^0.5.2",
     "webpack": "^1.9.10"
   },
