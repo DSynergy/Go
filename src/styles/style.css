@@ -1,0 +1,12 @@
+body {
+  color: tomato;
+  background-color: tomato;
+}
+
+.intersection {
+  background-color: lawngreen;
+  color: lawngreen;
+  width: 10px;
+  height: 10px;
+}
+
