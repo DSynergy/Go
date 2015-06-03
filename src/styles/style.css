@@ -5,8 +5,14 @@ body {
 
 .intersection {
   background-color: lawngreen;
-  color: lawngreen;
   width: 10px;
   height: 10px;
 }
 
+.black {
+  background-color: black;
+}
+
+.white {
+  background-color: white;
+}
