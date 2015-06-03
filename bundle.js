@@ -48,24 +48,43 @@
 	var board = __webpack_require__(2);
 
 	$(document).ready(function() {
-	    var $boardTable = $("#board");
-	    buildBoard(board, $boardTable);
+	  var $boardTable = $("#board");
+	  buildBoard(board, $boardTable);
+
+	  $('.intersection').click(function() {
+	    var $spot = $(this);
+	    console.log("lskdjf");
+	    // if (board.isValidMove($spot.attr('id')){
+	      changePiece($spot);
+	    // } else {
+	    //   alert("WRONG MOVE PAL");
+	    // }
+	  })
 	});
 
 	function buildBoard(board, table) {
-	    board.setSize(19);
-	    board.makeGrid();
-	    board.grid.forEach(function(row, i) {
-	        table.append($('<tr id="row_' + i + '">' + makeRow(row, i) + '</tr>'))
-	    })
+	  board.setSize(19);
+	  board.makeGrid();
+	  board.grid.forEach(function(row, i) {
+	    table.append($('<tr id="row_' + i + '">' + makeRow(row, i) + '</tr>'))
+	  })
 	}
 
 	function makeRow(row, rowIndex) {
-	    rowHTML = "";
-	    row.forEach(function(inter, i) {
-	        rowHTML += '<td class="intersection" id="'+ rowIndex + "," + i + '"></td>'
-	    })
-	    return rowHTML;
+	  rowHTML = "";
+	  row.forEach(function(inter, i) {
+	    rowHTML += '<td class="intersection" id="'+ rowIndex + "," + i + '"></td>'
+	  })
+	  return rowHTML;
+	}
+
+	function changePiece(spot) {
+	  var coordinates = spot.attr('id').split(',').map(function(value) {
+	    return parseInt(value);
+	  });
+	  var color = board.currentPlayer;
+	  spot.removeClass('intersection').addClass(color);
+	  board.update(coordinates[0], coordinates[1])
 	}
 
 
@@ -9290,14 +9309,14 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = {
-	    EMPTY: 0,
-	    BLACK: 1,
-	    WHITE: 2,
+	    EMPTY: 'none',
+	    BLACK: 'black',
+	    WHITE: 'white',
 
 	    size: 0,
 
-	    currentPlayer: 1,
-
+	    currentPlayer: 'black',
+	    
 	    setSize: function(size) {
 	        this.size = size;
 	    },

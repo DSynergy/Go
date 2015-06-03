@@ -8,7 +8,7 @@ describe('The Board', function() {
     });
 
     afterEach(function() {
-        board.currentPlayer = 1;
+        board.currentPlayer = 'black';
     })
 
     it('should exist', function() {
@@ -48,5 +48,23 @@ describe('The Board', function() {
         expect(board.grid[0][0]).to.be.eql(black);
         expect(board.grid[1][1]).to.be.eql(white);
         expect(board.grid[2][2]).to.be.eql(black);
+    });
+
+    it('cant play on top of another already played intersection', function() {
+        var black = board.BLACK;
+        var white = board.WHITE;
+        expect(board.currentPlayer).to.be.eql(black);
+        var validMove = board.update(2,2);
+        var invalidMove = board.update(2,2);
+        expect(board.grid[2][2]).to.be.eql(black);
+        expect(validMove).to.be.eql(true);
+        expect(invalidMove).to.be.eql(false);
+        expect(board.currentPlayer).to.be.eql(white);
+    });
+
+    it('cant suicide', function() {
+    });
+
+    it('cant repeat the same board state', function() {
     });
 });
