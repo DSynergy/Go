@@ -3,16 +3,40 @@ body {
   background-color: tomato;
 }
 
+
 .intersection {
-  background-color: lawngreen;
-  width: 10px;
-  height: 10px;
+  width: 30px;
+  height: 30px;
 }
 
 .black {
-  background-color: black;
+  background-image: url('../images/black-piece.png');
+  background-size: 32px 32px;
+  width: 30px;
+  height: 30px;
+  background-repeat: no-repeat;
+  z-index: 1;
 }
 
 .white {
-  background-color: white;
+  background-image: url('../images/white-piece.png');
+  background-size: 32px 32px;
+  width: 30px;
+  height: 30px;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#table-image {
+  width: 650px;
+  height: 650px;
+  margin-left: auto;
+  margin-right: auto;
+  background-image: url('../images/background.png');
+  background-repeat: no-repeat;
 }

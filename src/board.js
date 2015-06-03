@@ -1,12 +1,12 @@
 module.exports = {
-    EMPTY: 0,
-    BLACK: 1,
-    WHITE: 2,
+    EMPTY: 'none',
+    BLACK: 'black',
+    WHITE: 'white',
 
     size: 0,
 
-    currentPlayer: 1,
-
+    currentPlayer: 'black',
+    
     setSize: function(size) {
         this.size = size;
     },
@@ -25,12 +25,21 @@ module.exports = {
     },
 
     update: function(x, y) {
+        if (!this.isValidMove(x, y)){
+          return false
+        }
         if (this.currentPlayer === this.BLACK) {
             this.grid[x][y] = this.BLACK;
             this.currentPlayer = this.WHITE;
+            return true;
         } else {
             this.grid[x][y] = this.WHITE;
             this.currentPlayer = this.BLACK;
+            return true;
         }
+    },
+
+    isValidMove: function(x, y) {
+      return this.grid[x][y] == this.EMPTY;
     }
 }
