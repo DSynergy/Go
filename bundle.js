@@ -50,6 +50,10 @@
 	$(document).ready(function() {
 	    var $boardTable = $("#board");
 	    buildBoard(board, $boardTable);
+
+	    $('.intersection').click(function() {
+	        changePiece(this);
+	    })
 	});
 
 	function buildBoard(board, table) {
@@ -66,6 +70,11 @@
 	        rowHTML += '<td class="intersection" id="'+ rowIndex + "," + i + '"></td>'
 	    })
 	    return rowHTML;
+	}
+
+	function changePiece(it) {
+	    $it = $(it);
+	    $it.removeClass('intersection').addClass('black');
 	}
 
 
