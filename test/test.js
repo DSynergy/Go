@@ -5,7 +5,12 @@ describe('The Board', function() {
     beforeEach(function() {
         board.setSize(19);
         board.makeGrid();
+    });
+
+    afterEach(function() {
+        board.currentPlayer = 1;
     })
+
     it('should exist', function() {
         expect(board).to.be.ok;
     });
@@ -34,4 +39,14 @@ describe('The Board', function() {
         expect(board.grid[0][0]).to.be.eql(black);
     });
 
+    it('should update to white on second move', function() {
+        var black = board.BLACK;
+        var white = board.WHITE;
+        board.update(0,0);
+        board.update(1,1);
+        board.update(2,2);
+        expect(board.grid[0][0]).to.be.eql(black);
+        expect(board.grid[1][1]).to.be.eql(white);
+        expect(board.grid[2][2]).to.be.eql(black);
+    });
 });
