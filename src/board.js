@@ -48,10 +48,14 @@ Board.prototype.hasLiberty = function(x,y) {
 }
 
 Board.prototype.neighbors = function(x,y) {
-  return [[x, y - 1],
-          [x + 1, y],
-          [x, y + 1],
-          [x - 1, y]];
+  var points =  [[x, y - 1],
+                  [x + 1, y],
+                  [x, y + 1],
+                  [x - 1, y]]
+
+  return points.filter(function(coords) {
+    return coords[0] >= 0 && coords[1] >= 0 && coords[1] < this.size && coords[0] < this.size;
+  }.bind(this));
 }
 
 

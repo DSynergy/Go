@@ -91,6 +91,10 @@ describe('The Board', function() {
       expect(board.neighbors(1,1)).to.be.eql([[1,0],[2,1],[1,2],[0,1]]);
     });
 
+    it("finds neighbors at edges", function() {
+      expect(board.neighbors(0,0)).to.be.eql([[1,0],[0,1]]);
+    });
+
     it('tracks narrowing liberty', function() {
       moveSeq = [[0,1],[1,1],[1,0],[10,10],[1,2],[6,6]];
       moveSeq.forEach(function(coords) {
