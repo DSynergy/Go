@@ -48,17 +48,22 @@
 	var board = __webpack_require__(2);
 
 	$(document).ready(function() {
+	  debugger;
 	  var $boardTable = $("#board");
 	  buildBoard(board, $boardTable);
 
 	  $('.intersection').click(function() {
 	    var $spot = $(this);
-	    console.log("lskdjf");
-	    // if (board.isValidMove($spot.attr('id')){
-	      changePiece($spot);
-	    // } else {
-	    //   alert("WRONG MOVE PAL");
-	    // }
+	    var coordinates = $spot.attr('id').split(',').map(function(value) {
+	      return parseInt(value);
+	    });
+	    var x = coordinates[0];
+	    var y = coordinates[1];
+	    if (board.isValidMove(x, y)) {
+	      changePiece($spot, x, y);
+	    } else {
+	      alert("WRONG MOVE PAL");
+	    }
 	  })
 	});
 
@@ -78,13 +83,10 @@
 	  return rowHTML;
 	}
 
-	function changePiece(spot) {
-	  var coordinates = spot.attr('id').split(',').map(function(value) {
-	    return parseInt(value);
-	  });
+	function changePiece(spot, x, y) {
 	  var color = board.currentPlayer;
-	  spot.removeClass('intersection').addClass(color);
-	  board.update(coordinates[0], coordinates[1])
+	  spot.switchClass('intersection', color);
+	  board.update(x, y);
 	}
 
 
@@ -9308,22 +9310,22 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = {
-	    EMPTY: 'none',
-	    BLACK: 'black',
-	    WHITE: 'white',
+	module.exports = function Board() {
+	    this.EMPTY = 'empty';
+	    this.BLACK = 'black';
+	    this.WHITE = 'white';
 
-	    size: 0,
+	    this.size = 0;
 
-	    currentPlayer: 'black',
-	    
-	    setSize: function(size) {
+	    this.currentPlayer = 'black';
+	    this.grid = [];
+
+	    this.setSize = function(size) {
 	        this.size = size;
-	    },
+	    };
 
-	    grid: [],
 
-	    makeGrid: function() {
+	    this.makeGrid = function() {
 	        var m = [];
 	        for (var i = 0; i < this.size; i++) {
 	            m[i] = [];
@@ -9332,17 +9334,26 @@
 	            }
 	        }
 	        this.grid = m;
-	    },
+	    };
 
-	    update: function(x, y) {
+	    this.update = function(x, y) {
+	        if (!this.isValidMove(x, y)){
+	          return false
+	        }
 	        if (this.currentPlayer === this.BLACK) {
 	            this.grid[x][y] = this.BLACK;
 	            this.currentPlayer = this.WHITE;
+	            return true;
 	        } else {
 	            this.grid[x][y] = this.WHITE;
 	            this.currentPlayer = this.BLACK;
+	            return true;
 	        }
-	    }
+	    };
+
+	    this.isValidMove = function(x, y) {
+	      return this.grid[x][y] == this.EMPTY;
+	    };
 	}
 
 

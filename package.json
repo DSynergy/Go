@@ -26,7 +26,7 @@
   "keywords": [
     "go"
   ],
-  "author": "Valentino Espinoza (xvalentino13@gmail.com)",
+  "author": ["Valentino Espinoza (xvalentino13@gmail.com)", "Dustin Gault (Dustin.Gault@gmail.com)", "Jeffrey Gu (Jgu@jeffreygu.com)"],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/DSynergy/Go/issues"

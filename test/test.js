@@ -1,8 +1,12 @@
-var board = require("../src/board");
+var getBoard = require("../src/board");
 var expect = require('chai').expect;
 
 describe('The Board', function() {
     beforeEach(function() {
+      console.log(getBoard)
+      debugger;
+        var board = getBoard.call()
+        console.log(board)
         board.setSize(19);
         board.makeGrid();
     });

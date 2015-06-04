@@ -1,19 +1,18 @@
-module.exports = {
-    EMPTY: 'none',
-    BLACK: 'black',
-    WHITE: 'white',
+module.exports = function Board() {
+    this.EMPTY = 'empty';
+    this.BLACK = 'black';
+    this.WHITE = 'white';
 
-    size: 0,
+    this.size = 0;
 
-    currentPlayer: 'black',
-    
-    setSize: function(size) {
+    this.currentPlayer = 'black';
+    this.grid = [];
+
+    this.setSize = function(size) {
         this.size = size;
-    },
+    };
 
-    grid: [],
-
-    makeGrid: function() {
+    this.makeGrid = function() {
         var m = [];
         for (var i = 0; i < this.size; i++) {
             m[i] = [];
@@ -22,9 +21,9 @@ module.exports = {
             }
         }
         this.grid = m;
-    },
+    };
 
-    update: function(x, y) {
+    this.update = function(x, y) {
         if (!this.isValidMove(x, y)){
           return false
         }
@@ -37,9 +36,9 @@ module.exports = {
             this.currentPlayer = this.BLACK;
             return true;
         }
-    },
+    };
 
-    isValidMove: function(x, y) {
+    this.isValidMove = function(x, y) {
       return this.grid[x][y] == this.EMPTY;
-    }
+    };
 }

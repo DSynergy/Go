@@ -1,8 +1,8 @@
 var $ = require('jquery');
-var board = require('./board');
+var getBoard = require('./board');
 
 $(document).ready(function() {
-  //var board = new Board("#board");
+  var board = getBoard();
   var $boardTable = $("#board");
   buildBoard(board, $boardTable);
 
@@ -19,26 +19,27 @@ $(document).ready(function() {
       alert("WRONG MOVE PAL");
     }
   })
+
+  function buildBoard(board, table) {
+    board.setSize(19);
+    board.makeGrid();
+    board.grid.forEach(function(row, i) {
+      table.append($('<tr id="row_' + i + '">' + makeRow(row, i) + '</tr>'))
+    })
+  }
+
+  function makeRow(row, rowIndex) {
+    rowHTML = "";
+    row.forEach(function(inter, i) {
+      rowHTML += '<td class="intersection" id="'+ rowIndex + "," + i + '"></td>'
+    })
+    return rowHTML;
+  }
+
+  function changePiece(spot, x, y) {
+    var color = board.currentPlayer;
+    spot.switchClass('intersection', color);
+    board.update(x, y);
+  }
+
 });
-
-function buildBoard(board, table) {
-  board.setSize(19);
-  board.makeGrid();
-  board.grid.forEach(function(row, i) {
-    table.append($('<tr id="row_' + i + '">' + makeRow(row, i) + '</tr>'))
-  })
-}
-
-function makeRow(row, rowIndex) {
-  rowHTML = "";
-  row.forEach(function(inter, i) {
-    rowHTML += '<td class="intersection" id="'+ rowIndex + "," + i + '"></td>'
-  })
-  return rowHTML;
-}
-
-function changePiece(spot, x, y) {
-  var color = board.currentPlayer;
-  spot.removeClass('intersection').addClass(color);
-  board.update(x, y);
-}
