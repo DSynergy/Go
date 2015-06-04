@@ -45,10 +45,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var $ = __webpack_require__(1);
-	var board = __webpack_require__(2);
+	var getBoard = __webpack_require__(2);
 
 	$(document).ready(function() {
-	  debugger;
+	  var board = getBoard();
 	  var $boardTable = $("#board");
 	  buildBoard(board, $boardTable);
 
@@ -65,29 +65,30 @@
 	      alert("WRONG MOVE PAL");
 	    }
 	  })
+
+	  function buildBoard(board, table) {
+	    board.setSize(19);
+	    board.makeGrid();
+	    board.grid.forEach(function(row, i) {
+	      table.append($('<tr id="row_' + i + '">' + makeRow(row, i) + '</tr>'))
+	    })
+	  }
+
+	  function makeRow(row, rowIndex) {
+	    rowHTML = "";
+	    row.forEach(function(inter, i) {
+	      rowHTML += '<td class="intersection" id="'+ rowIndex + "," + i + '"></td>'
+	    })
+	    return rowHTML;
+	  }
+
+	  function changePiece(spot, x, y) {
+	    var color = board.currentPlayer;
+	    spot.switchClass('intersection', color);
+	    board.update(x, y);
+	  }
+
 	});
-
-	function buildBoard(board, table) {
-	  board.setSize(19);
-	  board.makeGrid();
-	  board.grid.forEach(function(row, i) {
-	    table.append($('<tr id="row_' + i + '">' + makeRow(row, i) + '</tr>'))
-	  })
-	}
-
-	function makeRow(row, rowIndex) {
-	  rowHTML = "";
-	  row.forEach(function(inter, i) {
-	    rowHTML += '<td class="intersection" id="'+ rowIndex + "," + i + '"></td>'
-	  })
-	  return rowHTML;
-	}
-
-	function changePiece(spot, x, y) {
-	  var color = board.currentPlayer;
-	  spot.switchClass('intersection', color);
-	  board.update(x, y);
-	}
 
 
 /***/ },
@@ -9310,7 +9311,7 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = function Board() {
+	var Board = function() {
 	    this.EMPTY = 'empty';
 	    this.BLACK = 'black';
 	    this.WHITE = 'white';
@@ -9319,42 +9320,44 @@
 
 	    this.currentPlayer = 'black';
 	    this.grid = [];
-
-	    this.setSize = function(size) {
-	        this.size = size;
-	    };
-
-
-	    this.makeGrid = function() {
-	        var m = [];
-	        for (var i = 0; i < this.size; i++) {
-	            m[i] = [];
-	            for (var j = 0; j < this.size; j++) {
-	                m[i][j] = this.EMPTY;
-	            }
-	        }
-	        this.grid = m;
-	    };
-
-	    this.update = function(x, y) {
-	        if (!this.isValidMove(x, y)){
-	          return false
-	        }
-	        if (this.currentPlayer === this.BLACK) {
-	            this.grid[x][y] = this.BLACK;
-	            this.currentPlayer = this.WHITE;
-	            return true;
-	        } else {
-	            this.grid[x][y] = this.WHITE;
-	            this.currentPlayer = this.BLACK;
-	            return true;
-	        }
-	    };
-
-	    this.isValidMove = function(x, y) {
-	      return this.grid[x][y] == this.EMPTY;
-	    };
 	}
+
+	Board.prototype.setSize = function(size) {
+	  this.size = size;
+	};
+
+	Board.prototype.makeGrid = function() {
+	  var m = [];
+	  for (var i = 0; i < this.size; i++) {
+	      m[i] = [];
+	      for (var j = 0; j < this.size; j++) {
+	          m[i][j] = this.EMPTY;
+	      }
+	  }
+	  this.grid = m;
+	};
+
+	Board.prototype.update = function(x, y) {
+	  if (!this.isValidMove(x, y)){
+	    return false
+	  }
+	  if (this.currentPlayer === this.BLACK) {
+	      this.grid[x][y] = this.BLACK;
+	      this.currentPlayer = this.WHITE;
+	      return true;
+	  } else {
+	      this.grid[x][y] = this.WHITE;
+	      this.currentPlayer = this.BLACK;
+	      return true;
+	  }
+	};
+
+	Board.prototype.isValidMove = function(x, y) {
+	  return this.grid[x][y] == this.EMPTY;
+	};
+
+
+	module.exports = Board;
 
 
 /***/ }

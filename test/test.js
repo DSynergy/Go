@@ -1,22 +1,19 @@
-var getBoard = require("../src/board");
+var Board = require("../src/board");
 var expect = require('chai').expect;
+var board = new Board();
 
 describe('The Board', function() {
     beforeEach(function() {
-      console.log(getBoard)
-      debugger;
-        var board = getBoard.call()
-        console.log(board)
-        board.setSize(19);
-        board.makeGrid();
+      board.setSize(19);
+      board.makeGrid();
     });
 
     afterEach(function() {
-        board.currentPlayer = 'black';
+      board.currentPlayer = 'black';
     })
 
     it('should exist', function() {
-        expect(board).to.be.ok;
+      expect(board).to.be.ok;
     });
 
     it('should be 19x19', function() {
@@ -70,5 +67,50 @@ describe('The Board', function() {
     });
 
     it('cant repeat the same board state', function() {
+    });
+
+    xit('identifies liberty of an int', function() {
+      board.update(1,1);
+      expect(board.liberties(1,1)).to.be.eql(4);
+      board.update(10,10);
+      board.update(1,2);
+      expect(board.liberties(1,1)).to.be.eql(6);
+      expect(board.liberties(1,2)).to.be.eql(6);
+    });
+
+    xit('determines if an intersection has liberty', function() {
+      board.update(1,1);
+      expect(board.hasLiberty(1,1)).to.be.eql(true);
+      board.update(10,10);
+      board.update(1,2);
+      expect(board.hasLiberty(1,1)).to.be.eql(true);
+      expect(board.hasLiberty(1,2)).to.be.eql(true);
+    });
+
+    it("finds neighbors of coord", function() {
+      expect(board.neighbors(1,1)).to.be.eql([[1,0],[2,1],[1,2],[0,1]]);
+    });
+
+    it('tracks narrowing liberty', function() {
+      moveSeq = [[0,1],[1,1],[1,0],[10,10],[1,2],[6,6]];
+      moveSeq.forEach(function(coords) {
+        board.update.apply(board, coords);
+      });
+      expect(board.hasLiberty(1,1)).to.be.ok;
+      board.update(2,1);
+      expect(board.hasLiberty(1,1)).not.to.be.ok;
+    });
+
+
+    //XBX
+    //BWB
+    //XBX
+    //
+    xit('captures a surrounded piece', function() {
+      moveSeq = [[0,1],[1,1],[1,0],[10,10],[1,2],[6,6],[2,1]];
+      moveSeq.forEach(function(coords) {
+        board.update.apply(board, coords);
+      });
+      expect(board.grid[1][1]).to.be.eql("empty")
     });
 });

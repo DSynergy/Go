@@ -1,12 +1,15 @@
 var $ = require('jquery');
-var getBoard = require('./board');
+var Board = require('./board');
 
 $(document).ready(function() {
-  var board = getBoard();
+  var board = new Board();
   var $boardTable = $("#board");
   buildBoard(board, $boardTable);
 
   $('.intersection').click(function() {
+
+    console.log("clicked a thing");
+    console.log(this);
     var $spot = $(this);
     var coordinates = $spot.attr('id').split(',').map(function(value) {
       return parseInt(value);
@@ -14,6 +17,7 @@ $(document).ready(function() {
     var x = coordinates[0];
     var y = coordinates[1];
     if (board.isValidMove(x, y)) {
+      console.log("change piece with ", $spot);
       changePiece($spot, x, y);
     } else {
       alert("WRONG MOVE PAL");
@@ -38,7 +42,7 @@ $(document).ready(function() {
 
   function changePiece(spot, x, y) {
     var color = board.currentPlayer;
-    spot.switchClass('intersection', color);
+    spot.removeClass('intersection').addClass(color);
     board.update(x, y);
   }
 
