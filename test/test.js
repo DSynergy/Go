@@ -80,7 +80,6 @@ describe('The Board', function() {
 
     it('determines if an intersection has liberty', function() {
       board.update(1,1);
-      board.log();
       expect(board.hasLiberty(1,1)).to.be.eql(true);
       board.update(10,10);
       board.update(1,2);
@@ -100,7 +99,7 @@ describe('The Board', function() {
       expect(board.neighbors(0,0)).to.be.eql([[1,0],[0,1]]);
     });
 
-    xit('tracks narrowing liberty', function() {
+    it('tracks narrowing liberty', function() {
       moveSeq = [[0,1],[1,1],[1,0],[10,10],[1,2],[6,6]];
       moveSeq.forEach(function(coords) {
         board.update.apply(board, coords);
@@ -110,39 +109,55 @@ describe('The Board', function() {
       expect(board.hasLiberty(1,1)).not.to.be.ok;
     });
 
+    it('can find a group of pieces', function() {
+      moveSeq = [[0,1],//b
+                 [1,1],//w
+                 [1,0],//b
+                 [13,13],//w
+                 [0,2],//b
+                 [1,2],//w
+                 [2,2],//b
+                 [8,8],//w
+                 [4,4],//b
+                 [1,3],//w
+                 [2,1]]//b
+
+       moveSeq.forEach(function(coords) {
+         board.update.apply(board, coords);
+       });
+       var group = board.findGroup(1,1);
+       expect(group).to.be.eql([[1,1],[1,2],[1,3]]);
+     });
+
     xit('tracks narrowing liberty', function() {
-      moveSeq = [[0,1]//b
-                //  [1,1],//w
-                //  [1,0],//b
-                //  [2,1],//w
-                //  [0,2],//b
-                //  [1,2],//w
-                //  [2,2],//b
-                //  [8,8],//w
-                //  [1,3]//b
+      moveSeq = [[0,1],//b
+                 [1,1],//w
+                 [1,0],//b
+                 [13,13],//w
+                 [0,2],//b
+                 [1,2],//w
+                 [2,2],//b
+                 [8,8],//w
+                 [2,1]//b
                  ];
+                 //XBX
+                 //BWB
+                 //BWB
+                 //XXX
       moveSeq.forEach(function(coords) {
         board.update.apply(board, coords);
       });
 
-      board.log();
-      // expect(board.hasLiberty(1,1)).to.be.ok;
-      // board.update(2,1);
-      // expect(board.hasLiberty(1,1)).not.to.be.ok;
+      expect(board.hasLiberty(1,1)).to.be.ok;
+      board.update(2,1);
+      expect(board.hasLiberty(1,1)).not.to.be.ok;
     });
 
-    //XBX
-    //BWB
-    //BWB
-    //XXX
-    //
-
-    //XBX
-    //BWB
-    //XBX
-    //
     xit('captures a surrounded piece', function() {
       moveSeq = [[0,1],[1,1],[1,0],[10,10],[1,2],[6,6],[2,1]];
+      //XBX
+      //BWB
+      //XBX
       moveSeq.forEach(function(coords) {
         board.update.apply(board, coords);
       });

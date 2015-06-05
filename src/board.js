@@ -2,6 +2,7 @@ var Board = function() {
     this.EMPTY = 'empty';
     this.BLACK = 'black';
     this.WHITE = 'white';
+    this.queue = [];
 
     this.size = 0;
 
@@ -43,12 +44,58 @@ Board.prototype.isValidMove = function(x, y) {
   return this.get(x,y) == this.EMPTY;
 };
 
+
+Board.prototype.findGroup = function(x,y) {
+  this.findGroupRecursively(x,y);
+  return this.queue;
+}
+
+Board.prototype.isItemNotInQueue = function(array, item) {
+  for (var i = 0; i < array.length; i++) {
+      if (array[i][0] == item[0] && array[i][1] == item[1]) {
+          return false;
+      }
+    }
+  return true;
+}
+
+Board.prototype.findGroupRecursively = function(x,y) {
+  var board = this
+  board.queue.push([x,y]);
+  var color = board.currentPlayer;
+  var neighbors = board.neighbors(x,y);
+  neighbors.forEach(function(neighborCoordinates) {
+    if (board.isItemNotInQueue(board.queue, neighborCoordinates) && board.colorAt(neighborCoordinates) === color) {
+      board.findGroup.apply(board, neighborCoordinates);
+    }
+  })
+};
+
+Board.prototype.neighbors = function(x,y) {
+  var points =  [[x, y - 1],
+                  [x + 1, y],
+                  [x, y + 1],
+                  [x - 1, y]]
+
+  return points.filter(function(coords) {
+    return coords[0] >= 0 && coords[1] >= 0 && coords[1] < this.size && coords[0] < this.size;
+  }.bind(this));
+}
+
+Board.prototype.colorAt = function(coords) {
+  return this.get.apply(this, coords);
+};
+
 Board.prototype.hasLiberty = function(x,y) {
   var color = this.get(x,y);
   if (this.neighborValues(x,y).indexOf("empty") > -1)
     return true;
   else if (this.neighborValues(x,y).indexOf(color) > -1) {
-    return "pizza";
+    "dustin"
+    // this.hasLiberty(neighborValues(x,y)
+    // where the color is the same and the coordiantes
+    // have not been counted
+
   } else {
     return false;
   }
@@ -68,17 +115,6 @@ Board.prototype.neighborValues = function(x,y) {
   }.bind(this));
 };
 
-Board.prototype.neighbors = function(x,y) {
-  var points =  [[x, y - 1],
-                  [x + 1, y],
-                  [x, y + 1],
-                  [x - 1, y]]
-
-  return points.filter(function(coords) {
-    return coords[0] >= 0 && coords[1] >= 0 && coords[1] < this.size && coords[0] < this.size;
-  }.bind(this));
-}
-
 Board.prototype.log = function() {
   var str = this.grid.map(function(r) {
     return r.map(function(s) {
@@ -93,6 +129,5 @@ Board.prototype.log = function() {
   }).join("\n")
   console.log(str);
 }
-
 
 module.exports = Board;
