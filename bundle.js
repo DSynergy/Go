@@ -45,47 +45,50 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var $ = __webpack_require__(1);
-	var board = __webpack_require__(2);
+	var getBoard = __webpack_require__(2);
 
 	$(document).ready(function() {
+	  var board = getBoard();
 	  var $boardTable = $("#board");
 	  buildBoard(board, $boardTable);
 
 	  $('.intersection').click(function() {
 	    var $spot = $(this);
-	    console.log("lskdjf");
-	    // if (board.isValidMove($spot.attr('id')){
-	      changePiece($spot);
-	    // } else {
-	    //   alert("WRONG MOVE PAL");
-	    // }
+	    var coordinates = $spot.attr('id').split(',').map(function(value) {
+	      return parseInt(value);
+	    });
+	    var x = coordinates[0];
+	    var y = coordinates[1];
+	    if (board.isValidMove(x, y)) {
+	      changePiece($spot, x, y);
+	    } else {
+	      alert("WRONG MOVE PAL");
+	    }
 	  })
+
+	  function buildBoard(board, table) {
+	    board.setSize(19);
+	    board.makeGrid();
+	    board.grid.forEach(function(row, i) {
+	      table.append($('<tr id="row_' + i + '">' + makeRow(row, i) + '</tr>'))
+	    })
+	  }
+
+	  function makeRow(row, rowIndex) {
+	    rowHTML = "";
+	    row.forEach(function(inter, i) {
+	      rowHTML += '<td class="intersection" id="'+ rowIndex + "," + i + '"></td>'
+	    })
+	    return rowHTML;
+	  }
+
+	  function changePiece(spot, x, y) {
+	    var color = board.currentPlayer;
+	    spot.switchClass('intersection', color);
+	    board.update(x, y);
+	  }
+
 	});
-
-	function buildBoard(board, table) {
-	  board.setSize(19);
-	  board.makeGrid();
-	  board.grid.forEach(function(row, i) {
-	    table.append($('<tr id="row_' + i + '">' + makeRow(row, i) + '</tr>'))
-	  })
-	}
-
-	function makeRow(row, rowIndex) {
-	  rowHTML = "";
-	  row.forEach(function(inter, i) {
-	    rowHTML += '<td class="intersection" id="'+ rowIndex + "," + i + '"></td>'
-	  })
-	  return rowHTML;
-	}
-
-	function changePiece(spot) {
-	  var coordinates = spot.attr('id').split(',').map(function(value) {
-	    return parseInt(value);
-	  });
-	  var color = board.currentPlayer;
-	  spot.removeClass('intersection').addClass(color);
-	  board.update(coordinates[0], coordinates[1])
-	}
 
 
 /***/ },
@@ -9308,42 +9311,53 @@
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = {
-	    EMPTY: 'none',
-	    BLACK: 'black',
-	    WHITE: 'white',
+	var Board = function() {
+	    this.EMPTY = 'empty';
+	    this.BLACK = 'black';
+	    this.WHITE = 'white';
 
-	    size: 0,
+	    this.size = 0;
 
-	    currentPlayer: 'black',
-	    
-	    setSize: function(size) {
-	        this.size = size;
-	    },
-
-	    grid: [],
-
-	    makeGrid: function() {
-	        var m = [];
-	        for (var i = 0; i < this.size; i++) {
-	            m[i] = [];
-	            for (var j = 0; j < this.size; j++) {
-	                m[i][j] = this.EMPTY;
-	            }
-	        }
-	        this.grid = m;
-	    },
-
-	    update: function(x, y) {
-	        if (this.currentPlayer === this.BLACK) {
-	            this.grid[x][y] = this.BLACK;
-	            this.currentPlayer = this.WHITE;
-	        } else {
-	            this.grid[x][y] = this.WHITE;
-	            this.currentPlayer = this.BLACK;
-	        }
-	    }
+	    this.currentPlayer = 'black';
+	    this.grid = [];
 	}
+
+	Board.prototype.setSize = function(size) {
+	  this.size = size;
+	};
+
+	Board.prototype.makeGrid = function() {
+	  var m = [];
+	  for (var i = 0; i < this.size; i++) {
+	      m[i] = [];
+	      for (var j = 0; j < this.size; j++) {
+	          m[i][j] = this.EMPTY;
+	      }
+	  }
+	  this.grid = m;
+	};
+
+	Board.prototype.update = function(x, y) {
+	  if (!this.isValidMove(x, y)){
+	    return false
+	  }
+	  if (this.currentPlayer === this.BLACK) {
+	      this.grid[x][y] = this.BLACK;
+	      this.currentPlayer = this.WHITE;
+	      return true;
+	  } else {
+	      this.grid[x][y] = this.WHITE;
+	      this.currentPlayer = this.BLACK;
+	      return true;
+	  }
+	};
+
+	Board.prototype.isValidMove = function(x, y) {
+	  return this.grid[x][y] == this.EMPTY;
+	};
+
+
+	module.exports = Board;
 
 
 /***/ }
