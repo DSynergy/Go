@@ -44,6 +44,7 @@ Board.prototype.update = function(x, y) {
 Board.prototype.removeNeighborsAround = function(x, y) {
   var board = this;
   var neighbors = board.neighbors(x, y);
+  this.capturedPieces = [];
   neighbors.forEach(function(neighbor) {
     board.countLibertiesAt.apply(board, neighbor);
   });
@@ -65,7 +66,6 @@ Board.prototype.removeAt = function(group) {
 Board.prototype.countLibertiesAt = function(x, y) {
   var board = this;
   this.queue = [];
-  this.capturedPieces = [];
   var group = board.findGroup(x, y);
   var groupLiberties = [];
   group.forEach(function(stone) {

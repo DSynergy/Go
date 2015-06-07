@@ -22,6 +22,14 @@ $(document).ready(function() {
     }
   })
 
+  function changeToEmpty(piece) {
+    var x = piece[0];
+    var y = piece[1];
+    console.log("y=" + y);
+    console.log("x=" + x);
+    $("td[id='"+x+","+y+"']").removeClass().addClass('intersection');
+  }
+
   function updateBoardAtPoints(pieces) {
     pieces.forEach(function(piece) {
       changeToEmpty(piece);
@@ -51,11 +59,5 @@ $(document).ready(function() {
     board.update(x, y);
   }
 
-  function changeToEmpty(piece) {
-    var x = piece[1];
-    var y = piece[0];
-    console.log("y=" + y);
-    console.log("x=" + x);
-    $('td#'+x+y).removeClass().addClass('intersection');
-  }
+
 });
