@@ -45,14 +45,17 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var $ = __webpack_require__(1);
-	var getBoard = __webpack_require__(2);
+	var Board = __webpack_require__(2);
 
 	$(document).ready(function() {
-	  var board = getBoard();
+	  var board = new Board();
 	  var $boardTable = $("#board");
 	  buildBoard(board, $boardTable);
 
 	  $('.intersection').click(function() {
+
+	    console.log("clicked a thing");
+	    console.log(this);
 	    var $spot = $(this);
 	    var coordinates = $spot.attr('id').split(',').map(function(value) {
 	      return parseInt(value);
@@ -60,6 +63,7 @@
 	    var x = coordinates[0];
 	    var y = coordinates[1];
 	    if (board.isValidMove(x, y)) {
+	      console.log("change piece with ", $spot);
 	      changePiece($spot, x, y);
 	    } else {
 	      alert("WRONG MOVE PAL");
@@ -84,7 +88,7 @@
 
 	  function changePiece(spot, x, y) {
 	    var color = board.currentPlayer;
-	    spot.switchClass('intersection', color);
+	    spot.removeClass('intersection').addClass(color);
 	    board.update(x, y);
 	  }
 
@@ -9315,6 +9319,7 @@
 	    this.EMPTY = 'empty';
 	    this.BLACK = 'black';
 	    this.WHITE = 'white';
+	    this.queue = [];
 
 	    this.size = 0;
 
@@ -9342,20 +9347,110 @@
 	    return false
 	  }
 	  if (this.currentPlayer === this.BLACK) {
-	      this.grid[x][y] = this.BLACK;
+	      this.setValue(x,y,this.BLACK);
 	      this.currentPlayer = this.WHITE;
 	      return true;
 	  } else {
-	      this.grid[x][y] = this.WHITE;
+	      this.setValue(x,y,this.WHITE);
 	      this.currentPlayer = this.BLACK;
 	      return true;
 	  }
 	};
 
 	Board.prototype.isValidMove = function(x, y) {
-	  return this.grid[x][y] == this.EMPTY;
+	  return this.get(x,y) == this.EMPTY;
 	};
 
+	Board.prototype.checkGroupForLiberty = function(x, y) {
+	  var group = this.findGroup(x, y);
+	  var groupLiberties = [];
+	  group.forEach(function(stone) {
+	    groupLiberties.push(this.hasLiberty.apply(this, stone));
+	      ;
+	  });
+	  var count = groupLiberties.count(true);
+	  return ;
+	}
+
+
+	Board.prototype.findGroup = function(x,y) {
+	  this.findGroupRecursively(x,y);
+	  return this.queue;
+	}
+
+	Board.prototype.isItemNotInQueue = function(array, item) {
+	  for (var i = 0; i < array.length; i++) {
+	      if (array[i][0] == item[0] && array[i][1] == item[1]) {
+	          return false;
+	      }
+	    }
+	  return true;
+	}
+
+	Board.prototype.findGroupRecursively = function(x,y) {
+	  var board = this
+	  board.queue.push([x,y]);
+	  var color = board.currentPlayer;
+	  var neighbors = board.neighbors(x,y);
+	  neighbors.forEach(function(neighborCoordinates) {
+	    if (board.isItemNotInQueue(board.queue, neighborCoordinates) && board.colorAt(neighborCoordinates) === color) {
+	      board.findGroup.apply(board, neighborCoordinates);
+	    }
+	  })
+	};
+
+	Board.prototype.neighbors = function(x,y) {
+	  var points =  [[x, y - 1],
+	                  [x + 1, y],
+	                  [x, y + 1],
+	                  [x - 1, y]]
+
+	  return points.filter(function(coords) {
+	    return coords[0] >= 0 && coords[1] >= 0 && coords[1] < this.size && coords[0] < this.size;
+	  }.bind(this));
+	}
+
+	Board.prototype.colorAt = function(coords) {
+	  return this.get.apply(this, coords);
+	};
+
+	Board.prototype.hasLiberty = function(x,y) {
+	  var color = this.get(x,y);
+	  if (this.neighborValues(x,y).indexOf("empty") > -1) {
+	    return true;
+	  } else {
+	    return false;
+	  }
+	}
+
+	Board.prototype.get = function(x,y) {
+	  return this.grid[y][x];
+	}
+
+	Board.prototype.setValue = function(x,y,value) {
+	  this.grid[y][x] = value;
+	}
+
+	Board.prototype.neighborValues = function(x,y) {
+	  return this.neighbors(x,y).map(function(coords) {
+	    return this.get.apply(this, coords);
+	  }.bind(this));
+	};
+
+	Board.prototype.log = function() {
+	  var str = this.grid.map(function(r) {
+	    return r.map(function(s) {
+	      if(s == 'empty') {
+	        return "X"
+	      } else if (s == "white") {
+	        return "W"
+	      } else if (s == "black") {
+	        return "B"
+	      }
+	    }).join("");
+	  }).join("\n")
+	  console.log(str);
+	}
 
 	module.exports = Board;
 

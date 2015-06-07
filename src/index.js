@@ -7,22 +7,27 @@ $(document).ready(function() {
   buildBoard(board, $boardTable);
 
   $('.intersection').click(function() {
-
-    console.log("clicked a thing");
-    console.log(this);
     var $spot = $(this);
     var coordinates = $spot.attr('id').split(',').map(function(value) {
       return parseInt(value);
     });
     var x = coordinates[0];
     var y = coordinates[1];
+
     if (board.isValidMove(x, y)) {
-      console.log("change piece with ", $spot);
       changePiece($spot, x, y);
+      updateBoardAtPoints(board.capturedPieces);
     } else {
       alert("WRONG MOVE PAL");
     }
   })
+
+  function updateBoardAtPoints(pieces) {
+    pieces.forEach(function(piece) {
+      changeToEmpty(piece);
+    });
+  }
+
 
   function buildBoard(board, table) {
     board.setSize(19);
@@ -46,4 +51,11 @@ $(document).ready(function() {
     board.update(x, y);
   }
 
+  function changeToEmpty(piece) {
+    var x = piece[1];
+    var y = piece[0];
+    console.log("y=" + y);
+    console.log("x=" + x);
+    $('td#'+x+y).removeClass().addClass('intersection');
+  }
 });
