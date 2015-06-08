@@ -52,7 +52,11 @@ Board.prototype.removeNeighborsAround = function(x, y) {
 };
 
 Board.prototype.isValidMove = function(x, y) {
-  return this.get(x,y) == this.EMPTY;
+    if (!this.hasLiberty(x,y)) {
+      (this.isItemNotInQueue(this.capturedPieces, [x,y]));
+    } else {
+      return this.get(x,y) == this.EMPTY
+    }
 };
 
 Board.prototype.removeAt = function(group) {
