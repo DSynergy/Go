@@ -57,8 +57,8 @@ Board.prototype.isValidMove = function(x, y) {
 Board.prototype.removeAt = function(group) {
   var board = this;
   group.forEach(function(stone) {
-    var y = stone[0];
-    var x = stone[1];
+    var x = stone[0];
+    var y = stone[1];
     board.setValue(x,y, "empty"); 
   })
 }
