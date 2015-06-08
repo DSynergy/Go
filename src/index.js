@@ -25,8 +25,6 @@ $(document).ready(function() {
   function changeToEmpty(piece) {
     var x = piece[0];
     var y = piece[1];
-    console.log("y=" + y);
-    console.log("x=" + x);
     $("td[id='"+x+","+y+"']").removeClass().addClass('intersection');
   }
 
