@@ -36,7 +36,6 @@ $(document).ready(function() {
     });
   }
 
-
   function buildBoard(board, table) {
     board.setSize(19);
     board.makeGrid();
