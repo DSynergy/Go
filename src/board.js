@@ -48,6 +48,7 @@ Board.prototype.removeNeighborsAround = function(x, y) {
   neighbors.forEach(function(neighbor) {
     board.countLibertiesAt.apply(board, neighbor);
   });
+  board.countLibertiesAt(x, y);
 };
 
 Board.prototype.isValidMove = function(x, y) {
