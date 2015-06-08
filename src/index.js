@@ -7,22 +7,34 @@ $(document).ready(function() {
   buildBoard(board, $boardTable);
 
   $('.intersection').click(function() {
-
-    console.log("clicked a thing");
-    console.log(this);
     var $spot = $(this);
     var coordinates = $spot.attr('id').split(',').map(function(value) {
       return parseInt(value);
     });
     var x = coordinates[0];
     var y = coordinates[1];
+
     if (board.isValidMove(x, y)) {
-      console.log("change piece with ", $spot);
       changePiece($spot, x, y);
+      updateBoardAtPoints(board.capturedPieces);
     } else {
       alert("WRONG MOVE PAL");
     }
   })
+
+  function changeToEmpty(piece) {
+    var x = piece[0];
+    var y = piece[1];
+    console.log("y=" + y);
+    console.log("x=" + x);
+    $("td[id='"+x+","+y+"']").removeClass().addClass('intersection');
+  }
+
+  function updateBoardAtPoints(pieces) {
+    pieces.forEach(function(piece) {
+      changeToEmpty(piece);
+    });
+  }
 
   function buildBoard(board, table) {
     board.setSize(19);
@@ -45,5 +57,6 @@ $(document).ready(function() {
     spot.removeClass('intersection').addClass(color);
     board.update(x, y);
   }
+
 
 });

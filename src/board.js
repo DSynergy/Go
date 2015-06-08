@@ -3,6 +3,7 @@ var Board = function() {
     this.BLACK = 'black';
     this.WHITE = 'white';
     this.queue = [];
+    this.capturedPieces = [];
 
     this.size = 0;
 
@@ -28,20 +29,68 @@ Board.prototype.makeGrid = function() {
 Board.prototype.update = function(x, y) {
   if (!this.isValidMove(x, y)){
     return false
-  }
-  if (this.currentPlayer === this.BLACK) {
+  } else if (this.currentPlayer === this.BLACK) {
       this.setValue(x,y,this.BLACK);
       this.currentPlayer = this.WHITE;
-      return true;
   } else {
       this.setValue(x,y,this.WHITE);
       this.currentPlayer = this.BLACK;
-      return true;
   }
+  this.removeNeighborsAround(x, y);
+  this.queue = [];
+  return true;
+};
+
+Board.prototype.removeNeighborsAround = function(x, y) {
+  var board = this;
+  var neighbors = board.neighbors(x, y);
+  this.capturedPieces = [];
+  neighbors.forEach(function(neighbor) {
+    board.countLibertiesAt.apply(board, neighbor);
+  });
+  board.countLibertiesAt(x, y);
 };
 
 Board.prototype.isValidMove = function(x, y) {
   return this.get(x,y) == this.EMPTY;
+};
+
+Board.prototype.removeAt = function(group) {
+  var board = this;
+  group.forEach(function(stone) {
+    var x = stone[0];
+    var y = stone[1];
+    board.setValue(x,y, "empty"); 
+  })
+}
+
+Board.prototype.countLibertiesAt = function(x, y) {
+  var board = this;
+  this.queue = [];
+  var group = board.findGroup(x, y);
+  var groupLiberties = [];
+  group.forEach(function(stone) {
+    groupLiberties.push(board.hasLiberty.apply(board, stone));
+      ;
+  });
+
+  var count = 0;
+  for(var i = 0; i < groupLiberties.length; ++i){
+    if(groupLiberties[i] == true)
+      count++;
+  }
+  if (count == 0) {
+    board.addGroupToCapturedPieces(board, group);
+    board.removeAt(group);
+  }
+
+  return count;
+};
+
+Board.prototype.addGroupToCapturedPieces = function(board, group) {
+  group.forEach(function(piece) {
+    board.capturedPieces.push(piece);
+  });
 };
 
 
@@ -60,9 +109,10 @@ Board.prototype.isItemNotInQueue = function(array, item) {
 }
 
 Board.prototype.findGroupRecursively = function(x,y) {
-  var board = this
+  var board = this;
+  var queue = [];
   board.queue.push([x,y]);
-  var color = board.currentPlayer;
+  var color = board.get(x,y);
   var neighbors = board.neighbors(x,y);
   neighbors.forEach(function(neighborCoordinates) {
     if (board.isItemNotInQueue(board.queue, neighborCoordinates) && board.colorAt(neighborCoordinates) === color) {
@@ -88,14 +138,8 @@ Board.prototype.colorAt = function(coords) {
 
 Board.prototype.hasLiberty = function(x,y) {
   var color = this.get(x,y);
-  if (this.neighborValues(x,y).indexOf("empty") > -1)
+  if (this.neighborValues(x,y).indexOf("empty") > -1) {
     return true;
-  else if (this.neighborValues(x,y).indexOf(color) > -1) {
-    "dustin"
-    // this.hasLiberty(neighborValues(x,y)
-    // where the color is the same and the coordiantes
-    // have not been counted
-
   } else {
     return false;
   }

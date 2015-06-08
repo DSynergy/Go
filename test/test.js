@@ -125,8 +125,8 @@ describe('The Board', function() {
        moveSeq.forEach(function(coords) {
          board.update.apply(board, coords);
        });
-       var group = board.findGroup(1,1);
-       expect(group).to.be.eql([[1,1],[1,2],[1,3]]);
+      var group = board.findGroup(1,1);
+      expect(group).to.be.eql([[1,1],[1,2],[1,3]]);
      });
 
     xit('tracks narrowing liberty', function() {
@@ -147,13 +147,12 @@ describe('The Board', function() {
       moveSeq.forEach(function(coords) {
         board.update.apply(board, coords);
       });
-
       expect(board.hasLiberty(1,1)).to.be.ok;
       board.update(2,1);
       expect(board.hasLiberty(1,1)).not.to.be.ok;
     });
 
-    xit('captures a surrounded piece', function() {
+    it('captures a surrounded piece', function() {
       moveSeq = [[0,1],[1,1],[1,0],[10,10],[1,2],[6,6],[2,1]];
       //XBX
       //BWB
