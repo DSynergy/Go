@@ -52,11 +52,7 @@ Board.prototype.removeNeighborsAround = function(x, y) {
 };
 
 Board.prototype.isValidMove = function(x, y) {
-    if (!this.hasLiberty(x,y)) {
-      (this.isItemNotInQueue(this.capturedPieces, [x,y]));
-    } else {
-      return this.get(x,y) == this.EMPTY
-    }
+  return this.get(x,y) == this.EMPTY;
 };
 
 Board.prototype.removeAt = function(group) {
@@ -64,7 +60,7 @@ Board.prototype.removeAt = function(group) {
   group.forEach(function(stone) {
     var x = stone[0];
     var y = stone[1];
-    board.setValue(x,y, "empty"); 
+    board.setValue(x,y, "empty");
   })
 }
 
