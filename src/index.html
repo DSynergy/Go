@@ -6,8 +6,31 @@
   <title>Go Game</title>
 </head>
 <body>
-<script type="text/javascript" charset="utf-8"i src="../bundle.js">
+  <script type="text/javascript" charset="utf-8"i src="../bundle.js">
   </script>
+  <div id="deadpieces">
+    <h3 id="go-title">JS Go</h3>
+    <h3 id="current-player">Current Player: Black</h3>
+    <table cellspacing='0'>
+    	<thead>
+    		<tr>
+    			<th>Dead Pieces</th>
+    			<th>Total</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+        <tr>
+          <td>White</td>
+          <td id="whitetotal">0</td>
+        </tr>
+    		<tr class="even">
+    			<td>Black</td>
+    			<td id="blacktotal">0</td>
+    		</tr>
+    	</tbody>
+    </table>
+  </div>
+
   <div id="table-image">
     <table id="board"></table>
   </div>
