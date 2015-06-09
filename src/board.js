@@ -4,6 +4,7 @@ var Board = function() {
     this.WHITE = 'white';
     this.queue = [];
     this.capturedPieces = [];
+    this.deadPieces = [];
 
     this.size = 0;
 
@@ -43,7 +44,9 @@ Board.prototype.update = function(x, y) {
 
 Board.prototype.removeNeighborsAround = function(x, y) {
   var board = this;
-  var neighbors = board.neighbors(x, y);
+  var neighbors = board.neighbors(x, y).filter(function(neighbor){
+    return board.get.apply(board, neighbor) != board.EMPTY
+  });
   this.capturedPieces = [];
   neighbors.forEach(function(neighbor) {
     board.countLibertiesAt.apply(board, neighbor);
@@ -58,11 +61,30 @@ Board.prototype.isValidMove = function(x, y) {
 Board.prototype.removeAt = function(group) {
   var board = this;
   group.forEach(function(stone) {
+    board.deadPieces.push(board.get.apply(board, stone));
     var x = stone[0];
     var y = stone[1];
     board.setValue(x,y, "empty");
   })
-}
+};
+
+Board.prototype.BlackPiecesCaptured = function() {
+  var count = 0;
+  for(var i = 0; i < this.deadPieces.length; ++i){
+    if(this.deadPieces[i] == this.BLACK)
+      count++
+    }
+    return count;
+};
+
+Board.prototype.WhitePiecesCaptured = function() {
+  var count = 0;
+  for(var i = 0; i < this.deadPieces.length; ++i){
+    if(this.deadPieces[i] == this.WHITE)
+      count++
+    }
+    return count;
+};
 
 Board.prototype.countLibertiesAt = function(x, y) {
   var board = this;
