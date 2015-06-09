@@ -20,11 +20,7 @@ $(document).ready(function() {
     } else {
       alert("WRONG MOVE PAL");
     }
-  $('#whitetotal').text(board.WhitePiecesCaptured());
-  $('#blacktotal').text(board.BlackPiecesCaptured());
-  $('#current-player').text('Current Player: ' + capitalizeFirstLetter(board.currentPlayer));
-
-  });
+  })
 
   function changeToEmpty(piece) {
     var x = piece[0];
@@ -60,8 +56,5 @@ $(document).ready(function() {
     board.update(x, y);
   }
 
-  function capitalizeFirstLetter(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-  }
 
 });
