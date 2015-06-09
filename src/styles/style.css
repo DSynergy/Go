@@ -30,6 +30,10 @@ table {
   margin-right: auto;
 }
 
+#go-title {
+  text-align: center;
+}
+
 #current-player {
    text-align: center;
 }
