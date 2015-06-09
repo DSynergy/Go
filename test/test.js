@@ -64,18 +64,39 @@ describe('The Board', function() {
     });
 
     it('cant suicide', function() {
+      var black = board.BLACK;
+      var white = board.WHITE;
+      expect(board.currentPlayer).to.be.eql(black);
+      board.update(1,0);
+      board.update(12,12);
+      board.update(0,1);
+      var invalidMove = board.update(2,2);
+      expect(invalidMove).to.be.eql(false);
+      expect(board.get(2,2)).to.be.eql(board.empty);
+      expect(board.currentPlayer).to.be.eql(white);
     });
 
     it('cant repeat the same board state', function() {
-    });
-
-    xit('identifies liberty of an int', function() {
-      board.update(1,1);
-      expect(board.liberties(1,1)).to.be.eql(4);
-      board.update(10,10);
-      board.update(1,2);
-      expect(board.liberties(1,1)).to.be.eql(6);
-      expect(board.liberties(1,2)).to.be.eql(6);
+      var black = board.BLACK;
+      var white = board.WHITE;
+      expect(board.currentPlayer).to.be.eql(black);
+      board.update(0,1); //b
+      board.update(0,2); //w
+      board.update(1,0); //b
+      board.update(1,1); //w
+      board.update(2,1); //b
+      board.update(1,3); //w
+      board.update(13,13); //b
+      board.update(2,2); //w
+      //EBW
+      //BWEW
+      //EBW
+      var validMove = board.update(1,2); //b
+      expect(validMove).to.be.eql(true);
+      expect(board.get(1,1)).to.be.eql(board.empty);
+      var invalidMove = board.update(1,1); //w
+      expect(invalidMove).to.be.eql(false);
+      expect(board.currentPlayer).to.be.eql(white);
     });
 
     it('determines if an intersection has liberty', function() {
@@ -129,29 +150,6 @@ describe('The Board', function() {
       expect(group).to.be.eql([[1,1],[1,2],[1,3]]);
      });
 
-    xit('tracks narrowing liberty', function() {
-      moveSeq = [[0,1],//b
-                 [1,1],//w
-                 [1,0],//b
-                 [13,13],//w
-                 [0,2],//b
-                 [1,2],//w
-                 [2,2],//b
-                 [8,8],//w
-                 [2,1]//b
-                 ];
-                 //XBX
-                 //BWB
-                 //BWB
-                 //XXX
-      moveSeq.forEach(function(coords) {
-        board.update.apply(board, coords);
-      });
-      expect(board.hasLiberty(1,1)).to.be.ok;
-      board.update(2,1);
-      expect(board.hasLiberty(1,1)).not.to.be.ok;
-    });
-
     it('captures a surrounded piece', function() {
       moveSeq = [[0,1],[1,1],[1,0],[10,10],[1,2],[6,6],[2,1]];
       //XBX
@@ -162,4 +160,14 @@ describe('The Board', function() {
       });
       expect(board.get(1,1)).to.be.eql("empty")
     });
+
+    xit('identifies the count of the liberties at an intersection', function() {
+      board.update(1,1);
+      expect(board.liberties(1,1)).to.be.eql(4);
+      board.update(10,10);
+      board.update(1,2);
+      expect(board.liberties(1,1)).to.be.eql(6);
+      expect(board.liberties(1,2)).to.be.eql(6);
+    });
+
 });
