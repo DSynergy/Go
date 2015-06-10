@@ -18,7 +18,7 @@ $(document).ready(function() {
       changePiece($spot, x, y);
       updateBoardAtPoints(board.capturedPieces);
     } else {
-      alert("WRONG MOVE PAL");
+      alert("Invalid Move");
     }
   $('#whitetotal').text(board.WhitePiecesCaptured());
   $('#blacktotal').text(board.BlackPiecesCaptured());

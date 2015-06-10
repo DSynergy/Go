@@ -56,11 +56,9 @@ Board.prototype.removeNeighborsAround = function(x, y) {
 Board.prototype.isValidMove = function(x, y) {
   if (this.get(x,y) === this.EMPTY) {
     if (!this.hasLiberty(x,y) && this.isCapturing(x,y)) {
-      console.log('first')
       return true
     }
     else if (this.hasLiberty(x,y)){
-      console.log('second')
       return true
     }
     else {
@@ -78,11 +76,9 @@ Board.prototype.isCapturing = function(x, y){
   var liberties = neighbors.map(function(neighbor){
      return board.countLibertiesAt.apply(board, neighbor);
   });
-  console.log('lib' + liberties);
   var akomi = liberties.filter(function(liberty){
     return liberty == 1
   });
-  console.log('akomi' + akomi);
   return akomi.length > 0
 };
 
@@ -233,7 +229,6 @@ Board.prototype.log = function() {
       }
     }).join("");
   }).join("\n")
-  console.log(str);
 }
 
 module.exports = Board;
