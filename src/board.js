@@ -1,15 +1,15 @@
 var Board = function() {
-    this.EMPTY = 'empty';
-    this.BLACK = 'black';
-    this.WHITE = 'white';
-    this.queue = [];
-    this.capturedPieces = [];
-    this.deadPieces = [];
+  this.EMPTY = 'empty';
+  this.BLACK = 'black';
+  this.WHITE = 'white';
+  this.queue = [];
+  this.capturedPieces = [];
+  this.deadPieces = [];
 
-    this.size = 0;
+  this.size = 0;
 
-    this.currentPlayer = 'black';
-    this.grid = [];
+  this.currentPlayer = 'black';
+  this.grid = [];
 }
 
 Board.prototype.setSize = function(size) {
@@ -19,10 +19,10 @@ Board.prototype.setSize = function(size) {
 Board.prototype.makeGrid = function() {
   var m = [];
   for (var i = 0; i < this.size; i++) {
-      m[i] = [];
-      for (var j = 0; j < this.size; j++) {
-          m[i][j] = this.EMPTY;
-      }
+    m[i] = [];
+    for (var j = 0; j < this.size; j++) {
+      m[i][j] = this.EMPTY;
+    }
   }
   this.grid = m;
 };
@@ -31,11 +31,11 @@ Board.prototype.update = function(x, y) {
   if (!this.isValidMove(x, y)){
     return false
   } else if (this.currentPlayer === this.BLACK) {
-      this.setValue(x,y,this.BLACK);
-      this.currentPlayer = this.WHITE;
+    this.setValue(x,y,this.BLACK);
+    this.currentPlayer = this.WHITE;
   } else {
-      this.setValue(x,y,this.WHITE);
-      this.currentPlayer = this.BLACK;
+    this.setValue(x,y,this.WHITE);
+    this.currentPlayer = this.BLACK;
   }
   this.removeNeighborsAround(x, y);
   this.queue = [];
@@ -52,6 +52,14 @@ Board.prototype.removeNeighborsAround = function(x, y) {
     board.countLibertiesAt.apply(board, neighbor);
   });
 };
+
+Board.prototype.nearFriendlyNeighborOrBlankSpace = function(x,y) {
+  if (this.neighborValues(x,y).indexOf("empty") > -1 || this.neighborValues(x,y.indexOf(currentPlayer)) > -1) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 Board.prototype.isValidMove = function(x, y) {
   if (this.get(x,y) === this.EMPTY) {
@@ -74,7 +82,7 @@ Board.prototype.isCapturing = function(x, y){
   var board = this;
   var neighbors = board.neighbors(x,y);
   var liberties = neighbors.map(function(neighbor){
-     return board.countLibertiesAt.apply(board, neighbor);
+    return board.countLibertiesAt.apply(board, neighbor);
   });
   var akomi = liberties.filter(function(liberty){
     return liberty == 1
@@ -97,7 +105,7 @@ Board.prototype.BlackPiecesCaptured = function() {
   for(var i = 0; i < this.deadPieces.length; ++i){
     if(this.deadPieces[i] == this.BLACK)
       count++
-    }
+  }
     return count;
 };
 
@@ -106,7 +114,7 @@ Board.prototype.WhitePiecesCaptured = function() {
   for(var i = 0; i < this.deadPieces.length; ++i){
     if(this.deadPieces[i] == this.WHITE)
       count++
-    }
+  }
     return count;
 };
 
@@ -123,7 +131,7 @@ Board.prototype.countLibertiesAt = function(x, y) {
   });
 
   var count = groupLiberties.reduce(function(a, b){
-      return a + b;
+    return a + b;
   });
 
   if (count === 0) {
@@ -160,10 +168,10 @@ Board.prototype.findGroup = function(x,y) {
 
 Board.prototype.isItemNotInQueue = function(array, item) {
   for (var i = 0; i < array.length; i++) {
-      if (array[i][0] == item[0] && array[i][1] == item[1]) {
-          return false;
-      }
+    if (array[i][0] == item[0] && array[i][1] == item[1]) {
+      return false;
     }
+  }
   return true;
 };
 
@@ -182,9 +190,9 @@ Board.prototype.findGroupRecursively = function(x,y) {
 
 Board.prototype.neighbors = function(x,y) {
   var points =  [[x, y - 1],
-                  [x + 1, y],
-                  [x, y + 1],
-                  [x - 1, y]]
+    [x + 1, y],
+  [x, y + 1],
+  [x - 1, y]]
 
   return points.filter(function(coords) {
     return coords[0] >= 0 && coords[1] >= 0 && coords[1] < this.size && coords[0] < this.size;
